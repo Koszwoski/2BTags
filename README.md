@@ -66,7 +66,7 @@ Feel free to contact me if you have any corrections or changes to suggest.
 
 **Discord / Minecraft IGN:** Koszwoski
 
-**Discord / Server:** https://discord.gg/EPE7VFDUVy
+**Discord Server:** https://discord.gg/EPE7VFDUVy
 
 ## Development
 

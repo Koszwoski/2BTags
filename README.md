@@ -1,2 +1,71 @@
 # 2BTags
-A client-side Fabric mod that displays 2b2t group tags, colours and logos above player nametags.
+
+2BTags is a client-side Fabric mod that shows a player's group memberships above their Minecraft nameplate.
+
+It is made for communities that want shared group tags without requiring a server-side mod. Tags, colours and optional logos are loaded from the 2BTags API.
+
+## What it does
+
+- Shows a compact stack of group names above a player's IGN.
+- Supports multiple groups per player.
+- Keeps the primary group at the top of the stack.
+- Uses each group's configured colour and optional logo.
+- Refreshes nearby-player tags automatically.
+- Works alongside Meteor's player nametag setting.
+- Lets each player hide or show tags with a configurable keybind.
+
+The default keybind is **G**. Change it in **Options → Controls → 2BTags**.
+
+## Installation
+
+1. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the matching Minecraft version.
+2. Install [Fabric API](https://modrinth.com/mod/fabric-api).
+3. Download the 2BTags JAR from [Releases](https://github.com/Koszwoski/GroupTag/releases).
+4. Place the JAR in your Minecraft instance's `mods` folder.
+5. Launch Minecraft.
+
+No server-side mod is required.
+
+## Compatibility
+
+The current release targets:
+
+| Requirement | Version |
+| --- | --- |
+| Minecraft | 1.21.11 |
+| Java | 21 or newer |
+| Fabric Loader | 0.19.5 or newer |
+| Fabric API | Required |
+
+## In game
+
+When a tagged player is nearby, their groups are rendered as separate lines above their name:
+
+```text
+[logo] The Devs
+[logo] Divinity
+[logo] Journeymen
+PlayerName
+```
+
+Groups are supplied by the API in display order. The client does not let players edit tags locally.
+
+## Network behaviour
+
+2BTags sends the UUIDs of nearby players to its lookup endpoint and receives their public tag data. It checks periodically while you are in a world and clears cached tags when leaving it.
+
+## Development
+
+```bash
+./gradlew build
+```
+
+The built JAR is written to:
+
+```text
+build/libs/
+```
+
+## License
+
+[MIT](LICENSE)

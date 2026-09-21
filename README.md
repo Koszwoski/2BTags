@@ -54,6 +54,12 @@ Groups are supplied by the API in display order. The client does not let players
 
 2BTags sends the UUIDs of nearby players to its lookup endpoint and receives their public tag data. It checks periodically while you are in a world and clears cached tags when leaving it.
 
+## Public data export
+
+For transparency, a public export of player group assignments is available in the [2BTags Daily Export](https://github.com/Koszwoski/2BTags-Daily-Export/tree/data/exports) repository.
+
+The export is updated automatically when player or group assignments change.
+
 ## Development
 
 ```bash

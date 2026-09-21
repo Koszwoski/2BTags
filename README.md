@@ -20,7 +20,7 @@ The default keybind is **G**. Change it in **Options → Controls → 2BTags**.
 
 1. Install [Fabric Loader](https://fabricmc.net/use/installer/) for the matching Minecraft version.
 2. Install [Fabric API](https://modrinth.com/mod/fabric-api).
-3. Download the 2BTags JAR from [Releases](https://github.com/Koszwoski/GroupTag/releases).
+3. Download the 2BTags JAR from [Releases](https://github.com/Koszwoski/2BTags/releases).
 4. Place the JAR in your Minecraft instance's `mods` folder.
 5. Launch Minecraft.
 

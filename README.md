@@ -60,6 +60,12 @@ For transparency, a public export of player group assignments is available in th
 
 The export is updated automatically when player or group assignments change.
 
+## Contact
+
+Feel free to contact me if you have any corrections or changes to suggest.
+
+**Discord / Minecraft IGN:** Koszwoski
+
 ## Development
 
 ```bash

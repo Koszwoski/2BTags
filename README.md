@@ -68,6 +68,10 @@ Feel free to contact me if you have any corrections or changes to suggest.
 
 **Discord Server:** https://discord.gg/EPE7VFDUVy
 
+## Special thanks to
+
+https://2b2t.miraheze.org | for the first data, some might be outdated but its a great start.
+
 ## Development
 
 ```bash

@@ -4,14 +4,18 @@
   "version": "${version}",
   "name": "2BTags",
   "description": "Shows a player's groups above their nametag.",
-  "authors": ["Koszwoski"],
+  "authors": [
+    "Koszwoski"
+  ],
   "contact": {
     "sources": "https://github.com/Koszwoski/2BTags"
   },
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
-    "client": ["gg.grouptags.client.GroupTagClient"]
+    "client": [
+      "gg.grouptags.client.GroupTagClient"
+    ]
   },
   "mixins": [
     {
@@ -24,5 +28,6 @@
     "minecraft": "~1.21.11",
     "java": ">=21",
     "fabric-api": "*"
-  }
+  },
+  "icon": "assets/grouptag/2BTagsLogo.png"
 }

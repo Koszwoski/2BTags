@@ -6,7 +6,7 @@
   "description": "Shows a player's groups above their nametag.",
   "authors": ["Koszwoski"],
   "contact": {
-    "sources": "https://github.com/Koszwoski/GroupTag"
+    "sources": "https://github.com/Koszwoski/2BTags"
   },
   "license": "MIT",
   "environment": "client",

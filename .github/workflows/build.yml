@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-1_21_4:
+  build-1_21_1:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,14 +28,14 @@ jobs:
       - run: gradle build --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: 2BTags-1.21.4
+          name: 2BTags-1.21.1
           path: build/libs/*.jar
           if-no-files-found: error
       - name: Prepare release JAR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           VERSION="$(grep '^mod_version=' gradle.properties | cut -d= -f2)"
-          JAR_NAME="2BTags-${VERSION}-1.21.4.jar"
+          JAR_NAME="2BTags-${VERSION}-1.21.1.jar"
           cp "$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)" "${JAR_NAME}"
           echo "RELEASE_JAR=${JAR_NAME}" >> "${GITHUB_ENV}"
       - name: Publish latest release

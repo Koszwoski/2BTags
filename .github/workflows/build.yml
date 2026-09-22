@@ -1,0 +1,48 @@
+name: Build 2BTags
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: 2btags-release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-1_21_4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.5.0"
+      - run: gradle build --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 2BTags-1.21.4
+          path: build/libs/*.jar
+          if-no-files-found: error
+      - name: Prepare release JAR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          VERSION="$(grep '^mod_version=' gradle.properties | cut -d= -f2)"
+          JAR_NAME="2BTags-${VERSION}-1.21.4.jar"
+          cp "$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)" "${JAR_NAME}"
+          echo "RELEASE_JAR=${JAR_NAME}" >> "${GITHUB_ENV}"
+      - name: Publish 2.0.0 release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v2.0.0-1.21.4
+          name: 2BTags 2.0.0 (1.21.4)
+          prerelease: false
+          files: ${{ env.RELEASE_JAR }}

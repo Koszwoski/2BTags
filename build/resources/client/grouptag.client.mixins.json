@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "gg.grouptags.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "PlayerRendererMixin",
+    "MeteorNametagCompatibilityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

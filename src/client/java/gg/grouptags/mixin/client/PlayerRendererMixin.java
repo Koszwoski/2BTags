@@ -34,11 +34,11 @@ abstract class PlayerRendererMixin {
 
     @Shadow
     protected abstract void renderLabelIfPresent(Entity entity, Component name,
-                                          PoseStack poses, MultiBufferSource buffers, int packedLight);
+                                          PoseStack poses, MultiBufferSource buffers, int packedLight, float tickDelta);
 
     @Inject(method = "renderLabelIfPresent", at = @At("TAIL"))
     private void grouptag$render(Entity entity, Component originalName,
-                                 PoseStack poses, MultiBufferSource buffers, int packedLight,
+                                 PoseStack poses, MultiBufferSource buffers, int packedLight, float tickDelta,
                                  CallbackInfo ci) {
         if (grouptag$rendering || !(entity instanceof AbstractClientPlayer player)) {
             return;
@@ -62,7 +62,8 @@ abstract class PlayerRendererMixin {
                     Component.literal(tag.name()).withColor(tag.color() & 0xFFFFFF),
                     poses,
                     buffers,
-                    packedLight
+                    packedLight,
+                    tickDelta
                 );
                 poses.popPose();
 

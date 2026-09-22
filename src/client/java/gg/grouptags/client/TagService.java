@@ -53,8 +53,10 @@ final class TagService {
             return;
         }
 
-        List<UUID> playerUuids = client.level.players().stream()
-            .map(player -> player.getUUID())
+        List<UUID> playerUuids = java.util.stream.Stream.concat(
+                client.level.players().stream().map(player -> player.getUUID()),
+                client.player == null ? java.util.stream.Stream.empty() : java.util.stream.Stream.of(client.player.getUUID())
+            )
             .distinct()
             .limit(100)
             .toList();

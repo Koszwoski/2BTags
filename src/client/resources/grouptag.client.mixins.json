@@ -3,8 +3,7 @@
   "package": "gg.grouptags.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "PlayerRendererMixin",
-    "MeteorNametagCompatibilityMixin"
+    "PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

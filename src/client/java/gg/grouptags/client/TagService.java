@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CompletableFuture;
 
 final class TagService {
     private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger("2BTags");
@@ -28,7 +29,10 @@ final class TagService {
     private long nextErrorLogAt;
 
     TagService() { LOG.info("[2BTags] Multi-group tag service initialized"); }
-    private static final String API_URL = "https://api.kosz.dev/v1/tags/lookup?uuids=";
+    private static final List<String> API_URLS = List.of(
+        "https://api.kosz.dev/v1/tags/lookup?uuids=",
+        "https://api.grouptags.gg/v1/tags/lookup?uuids="
+    );
     private static final long REFRESH_INTERVAL_MS = 5_000L;
     private static final HttpClient HTTP = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(5))
@@ -53,8 +57,10 @@ final class TagService {
             return;
         }
 
-        List<UUID> playerUuids = client.level.players().stream()
-            .map(player -> player.getUUID())
+        List<UUID> playerUuids = java.util.stream.Stream.concat(
+                client.level.players().stream().map(player -> player.getUUID()),
+                client.player == null ? java.util.stream.Stream.empty() : java.util.stream.Stream.of(client.player.getUUID())
+            )
             .distinct()
             .limit(100)
             .toList();
@@ -84,19 +90,7 @@ final class TagService {
         requestInFlight = true;
         nextRefreshAt = System.currentTimeMillis() + REFRESH_INTERVAL_MS;
 
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(API_URL + URLEncoder.encode(uuidList, StandardCharsets.UTF_8)))
-            .timeout(Duration.ofSeconds(8))
-            .GET()
-            .build();
-
-        HTTP.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-            .thenApply(response -> {
-                if (response.statusCode() != 200) {
-                    throw new IllegalStateException("Lookup HTTP " + response.statusCode());
-                }
-                return response.body();
-            })
+        lookup(uuidList, 0)
             .thenApply(this::parse)
             .thenAccept(result -> client.execute(() -> {
                 if (client.level == requestLevel) {
@@ -120,6 +114,38 @@ final class TagService {
                 }
                 requestInFlight = false;
                 return null;
+            });
+    }
+
+    private CompletableFuture<String> lookup(String uuidList, int endpointIndex) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(API_URLS.get(endpointIndex) + URLEncoder.encode(uuidList, StandardCharsets.UTF_8)))
+            .timeout(Duration.ofSeconds(8))
+            .GET()
+            .build();
+
+        return HTTP.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenCompose(response -> {
+                if (response.statusCode() == 200) {
+                    return CompletableFuture.completedFuture(response.body());
+                }
+
+                if (endpointIndex + 1 < API_URLS.size()) {
+                    LOG.warn("[2BTags] Lookup HTTP {} via {}; trying fallback", response.statusCode(), API_URLS.get(endpointIndex));
+                    return lookup(uuidList, endpointIndex + 1);
+                }
+
+                return CompletableFuture.failedFuture(
+                    new IllegalStateException("Lookup HTTP " + response.statusCode())
+                );
+            })
+            .exceptionallyCompose(error -> {
+                if (endpointIndex + 1 < API_URLS.size()) {
+                    LOG.warn("[2BTags] Lookup via {} failed; trying fallback", API_URLS.get(endpointIndex));
+                    return lookup(uuidList, endpointIndex + 1);
+                }
+
+                return CompletableFuture.failedFuture(error);
             });
     }
 

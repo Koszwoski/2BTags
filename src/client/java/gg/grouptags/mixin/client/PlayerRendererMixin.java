@@ -1,12 +1,17 @@
 package gg.grouptags.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import gg.grouptags.client.GroupTag;
 import gg.grouptags.client.GroupTagClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,6 +29,8 @@ import java.util.List;
 @Mixin(PlayerRenderer.class)
 abstract class PlayerRendererMixin {
     @Unique private boolean grouptag$rendering;
+
+    @Shadow @Final protected EntityRenderDispatcher entityRenderDispatcher;
 
     @Shadow
     protected abstract void renderNameTag(AbstractClientPlayer player, Component name,
@@ -58,9 +65,38 @@ abstract class PlayerRendererMixin {
                     packedLight
                 );
                 poses.popPose();
+
+                grouptag$renderLogo(tag, player, yOffset, poses, buffers, packedLight);
             }
         } finally {
             grouptag$rendering = false;
         }
+    }
+
+    @Unique
+    private void grouptag$renderLogo(GroupTag tag, AbstractClientPlayer player, double yOffset,
+                                     PoseStack poses, MultiBufferSource buffers, int packedLight) {
+        GroupTagClient.getLogo(tag).ifPresent(texture -> {
+            float textWidth = Minecraft.getInstance().font.width(tag.name());
+            float iconX = tag.logoAfterName() ? textWidth / 2.0F + 5.0F : -textWidth / 2.0F - 5.0F;
+            float halfSize = 4.0F;
+
+            poses.pushPose();
+            try {
+                poses.translate(0.0D, player.getBbHeight() + 0.5D + yOffset, 0.0D);
+                poses.mulPose(entityRenderDispatcher.cameraOrientation());
+                poses.scale(0.025F, -0.025F, 0.025F);
+                poses.translate(iconX, 4.0F, 0.01F);
+
+                VertexConsumer vertices = buffers.getBuffer(RenderType.text(texture));
+                var matrix = poses.last().pose();
+                vertices.addVertex(matrix, -halfSize, -halfSize, 0.0F).setColor(-1).setUv(0.0F, 0.0F).setLight(packedLight);
+                vertices.addVertex(matrix, -halfSize, halfSize, 0.0F).setColor(-1).setUv(0.0F, 1.0F).setLight(packedLight);
+                vertices.addVertex(matrix, halfSize, halfSize, 0.0F).setColor(-1).setUv(1.0F, 1.0F).setLight(packedLight);
+                vertices.addVertex(matrix, halfSize, -halfSize, 0.0F).setColor(-1).setUv(1.0F, 0.0F).setLight(packedLight);
+            } finally {
+                poses.popPose();
+            }
+        });
     }
 }

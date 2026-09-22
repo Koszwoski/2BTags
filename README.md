@@ -3,6 +3,7 @@
 2BTags is a client-side Fabric mod that shows a player's group memberships above their Minecraft nameplate.
 
 It is made for communities that want shared group tags without requiring a server-side mod. Tags, colours and optional logos are loaded from the 2BTags API.
+<img width="521" height="907" alt="screenshot" src="https://github.com/user-attachments/assets/211e942b-7597-42e7-907c-ddec779777af" />
 
 ## What it does
 

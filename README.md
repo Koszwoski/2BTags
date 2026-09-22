@@ -28,11 +28,18 @@ No server-side mod is required.
 
 ## Compatibility
 
-The current release targets:
+This branch (`mc-1.21.4`) targets **Minecraft 1.21.4**. 2BTags is also available for other Minecraft versions, each on its own branch:
+
+| Minecraft | Branch |
+| --- | --- |
+| 1.21.11 | [`main`](https://github.com/Koszwoski/2BTags/tree/main) |
+| 1.21.4 | `mc-1.21.4` (this branch) |
+| 1.21.1 | [`mc-1.21.1`](https://github.com/Koszwoski/2BTags/tree/mc-1.21.1) |
+
+Prebuilt JARs for all versions are published on the [Releases](https://github.com/Koszwoski/2BTags/releases) page.
 
 | Requirement | Version |
 | --- | --- |
-| Minecraft | 1.21.11 |
 | Java | 21 or newer |
 | Fabric Loader | 0.19.5 or newer |
 | Fabric API | Required |

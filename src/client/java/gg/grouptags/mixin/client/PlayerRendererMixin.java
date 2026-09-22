@@ -9,8 +9,9 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,25 +23,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 /**
- * Minecraft 1.21.1 still renders names directly from the player entity
- * (the render-state API arrived in 1.21.2). Re-use the vanilla name renderer
- * for every tag so distance, text background and accessibility settings match.
+ * In 1.21.1, name tags are declared on EntityRenderer rather than PlayerRenderer.
+ * Only player entities receive 2BTags rows.
  */
-@Mixin(PlayerRenderer.class)
+@Mixin(EntityRenderer.class)
 abstract class PlayerRendererMixin {
     @Unique private boolean grouptag$rendering;
 
     @Shadow @Final protected EntityRenderDispatcher entityRenderDispatcher;
 
     @Shadow
-    protected abstract void renderNameTag(AbstractClientPlayer player, Component name,
+    protected abstract void renderNameTag(Entity entity, Component name,
                                           PoseStack poses, MultiBufferSource buffers, int packedLight);
 
     @Inject(method = "renderNameTag", at = @At("TAIL"))
-    private void grouptag$render(AbstractClientPlayer player, Component originalName,
+    private void grouptag$render(Entity entity, Component originalName,
                                  PoseStack poses, MultiBufferSource buffers, int packedLight,
                                  CallbackInfo ci) {
-        if (grouptag$rendering) {
+        if (grouptag$rendering || !(entity instanceof AbstractClientPlayer player)) {
             return;
         }
 
@@ -58,7 +58,7 @@ abstract class PlayerRendererMixin {
                 poses.pushPose();
                 poses.translate(0.0D, yOffset, 0.0D);
                 renderNameTag(
-                    player,
+                    entity,
                     Component.literal(tag.name()).withColor(tag.color() & 0xFFFFFF),
                     poses,
                     buffers,

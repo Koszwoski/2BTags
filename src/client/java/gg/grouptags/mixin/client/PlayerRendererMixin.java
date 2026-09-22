@@ -30,13 +30,13 @@ import java.util.List;
 abstract class PlayerRendererMixin {
     @Unique private boolean grouptag$rendering;
 
-    @Shadow @Final protected EntityRenderDispatcher entityRenderDispatcher;
+    @Shadow @Final protected EntityRenderDispatcher field_4676;
 
     @Shadow
-    protected abstract void renderLabelIfPresent(Entity entity, Component name,
+    protected abstract void method_3926(Entity entity, Component name,
                                           PoseStack poses, MultiBufferSource buffers, int packedLight, float tickDelta);
 
-    @Inject(method = "renderLabelIfPresent", at = @At("TAIL"))
+    @Inject(method = "method_3926", at = @At("TAIL"))
     private void grouptag$render(Entity entity, Component originalName,
                                  PoseStack poses, MultiBufferSource buffers, int packedLight, float tickDelta,
                                  CallbackInfo ci) {
@@ -57,7 +57,7 @@ abstract class PlayerRendererMixin {
 
                 poses.pushPose();
                 poses.translate(0.0D, yOffset, 0.0D);
-                renderLabelIfPresent(
+                method_3926(
                     entity,
                     Component.literal(tag.name()).withColor(tag.color() & 0xFFFFFF),
                     poses,
@@ -85,7 +85,7 @@ abstract class PlayerRendererMixin {
             poses.pushPose();
             try {
                 poses.translate(0.0D, player.getBbHeight() + 0.5D + yOffset, 0.0D);
-                poses.mulPose(entityRenderDispatcher.cameraOrientation());
+                poses.mulPose(field_4676.cameraOrientation());
                 poses.scale(0.025F, -0.025F, 0.025F);
                 poses.translate(iconX, 4.0F, 0.01F);
 

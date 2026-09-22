@@ -8,6 +8,32 @@ An example:
 
 <img width="521" height="907" alt="screenshot" src="https://github.com/user-attachments/assets/211e942b-7597-42e7-907c-ddec779777af" />
 
+## Groups added - 09/22/2026
+
+  - 2B2T Party Committee
+  - Astral Brotherhood
+  - Divinity
+  - Donfuer
+  - Emperium
+  - Enclave
+  - Fifth Column
+  - Highway Workers Union
+  - Hunters Union
+  - Journeymen
+  - Loot Lords
+  - Mercenaries Corp
+  - New Spawn Order
+  - Spawn Builders Association
+  - SpawnMasons
+  - Stasis Co
+  - The Devs
+  - The Imperials
+  - The Trading Post
+  - Vapepens Elite Alliance
+
+    Can you help me add more groups or IGN's let me know.
+
+
 ## What it does
 
 - Shows a compact stack of group names above a player's IGN.

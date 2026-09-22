@@ -32,8 +32,8 @@ This branch (`mc-1.21.4`) targets **Minecraft 1.21.4**. 2BTags is also available
 
 | Minecraft | Branch |
 | --- | --- |
-| 1.21.11 | [`main`](https://github.com/Koszwoski/2BTags/tree/main) |
-| 1.21.4 | `mc-1.21.4` (this branch) |
+| 1.21.11 | [`main`](this branch) |
+| 1.21.4 | [`mc-1.21.4`](https://github.com/Koszwoski/2BTags/tree/mc-1.21.4) |
 | 1.21.1 | [`mc-1.21.1`](https://github.com/Koszwoski/2BTags/tree/mc-1.21.1) |
 
 Prebuilt JARs for all versions are published on the [Releases](https://github.com/Koszwoski/2BTags/releases) page.

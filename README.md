@@ -104,6 +104,7 @@ Feel free to contact me if you have any corrections or changes to suggest.
 **Discord / Minecraft IGN:** Koszwoski
 
 **Discord Server:** https://discord.gg/EPE7VFDUVy
+(Service windows and more technical stuff about the API will on the Discord Server as well)
 
 ## Special thanks to
 
